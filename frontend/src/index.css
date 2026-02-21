@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.input {
+  @apply border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.btn {
+  @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-xl p-6;
+}

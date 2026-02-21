@@ -1,0 +1,256 @@
+{
+  "info": {
+    "_postman_id": "23081315-38d2-4cb3-b082-109fcbf19a06",
+    "name": "Notes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51834804"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"username\": \"bhanu\",\r\n  \"email\": \"bhanu@test.com\",\r\n  \"password\": \"123456\",\r\n  \"role\": \"admin\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/v1/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "register"
+          ]
+        },
+        "description": "## Register a New User\n\nThis endpoint registers a new user in the system by accepting user details and creating an account.\n\n**Method:** `POST`  \n**URL:** `http://localhost:4000/api/v1/auth/register`\n\n---\n\n### Request Body\n\nThe request body must be sent as **raw JSON** with the following fields:\n\n| Field | Type | Description |\n|---|---|---|\n| `username` | string | The desired username for the new account |\n| `email` | string | The user's email address (must be unique) |\n| `password` | string | The password for the account |\n| `role` | string | The role assigned to the user (e.g., `admin`, `user`) |\n\n**Example:**\n```json\n{\n  \"username\": \"bhanu\",\n  \"email\": \"bhanu@test.com\",\n  \"password\": \"123456\",\n  \"role\": \"admin\"\n}\n```\n\n---\n\n### Expected Response\n\n**Status Code:** `201 Created`\n\n```json\n{\n  \"message\": \"User Registered Successfully!\"\n}\n```\n\nThe response confirms that the user has been successfully registered in the system."
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"bhanu@test.com\",\r\n  \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/v1/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "login"
+          ]
+        },
+        "description": "## Login\n\nAuthenticates an existing user and returns a JWT token upon successful login.\n\n**Endpoint:** `POST /api/v1/auth/login`\n\n---\n\n### Request Body\n\nSend a JSON object with the following fields:\n\n| Field | Type | Required | Description |\n|-------|------|----------|-------------|\n| `email` | string | ✅ Yes | The registered email address of the user |\n| `password` | string | ✅ Yes | The user's password |\n\n**Example:**\n```json\n{\n  \"email\": \"bhanu@test.com\",\n  \"password\": \"123456\"\n}\n```\n\n---\n\n### Response\n\nOn success, returns a `200 OK` with a success message and a JWT token:\n\n```json\n{\n  \"message\": \"User Logged In Successfully!\",\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n```\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `message` | string | Confirmation message indicating successful login |\n| `token` | string | A signed JWT token to be used for authenticating subsequent requests |\n\n> **Note:** Include the returned `token` in the `Authorization` header as `Bearer <token>` for all protected endpoints."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Note",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljODVmYjQ5YWQ5YThkZTAwYzYzZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTY4NjA0MCwiZXhwIjoxNzcxNzcyNDQwfQ.fiLmq216p2wn_7i_gkvToov7fI8tEJ0BjhVftFTyTzs",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"First Note\",\r\n  \"content\": \"Testing API from Postman\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/v1/notes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "notes"
+          ]
+        },
+        "description": "## Create Note\n\nCreates a new note for the authenticated user. The note is associated with the owner's account and stored with a unique ID and timestamps.\n\n---\n\n### Endpoint\n\n`POST http://localhost:4000/api/v1/notes`\n\n---\n\n### Request Body\n\nSend a JSON object with the following fields:\n\n| Field     | Type   | Required | Description                        |\n|-----------|--------|----------|------------------------------------|\n| `title`   | String | Yes      | The title of the note              |\n| `content` | String | Yes      | The main body/content of the note  |\n\n**Example:**\n```json\n{\n  \"title\": \"First Note\",\n  \"content\": \"Testing API from Postman\"\n}\n```\n\n---\n\n### Response\n\n**Status Code:** `201 Created`\n\nReturns the newly created note object with server-generated fields.\n\n| Field       | Type   | Description                                      |\n|-------------|--------|--------------------------------------------------|\n| `_id`       | String | Unique identifier for the note (MongoDB ObjectId)|\n| `title`     | String | The title of the note                            |\n| `content`   | String | The content/body of the note                     |\n| `owner`     | String | The ID of the user who created the note          |\n| `createdAt` | String | ISO 8601 timestamp of when the note was created  |\n| `updatedAt` | String | ISO 8601 timestamp of the last update            |\n\n**Example Response:**\n```json\n{\n  \"title\": \"First Note\",\n  \"content\": \"Testing API from Postman\",\n  \"owner\": \"6999c85fb49ad9a8de00c63d\",\n  \"_id\": \"6999c8d8b49ad9a8de00c640\",\n  \"createdAt\": \"2026-02-21T15:01:44.164Z\",\n  \"updatedAt\": \"2026-02-21T15:01:44.164Z\",\n  \"__v\": 0\n}\n```"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Note",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljODVmYjQ5YWQ5YThkZTAwYzYzZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTY4NjA0MCwiZXhwIjoxNzcxNzcyNDQwfQ.fiLmq216p2wn_7i_gkvToov7fI8tEJ0BjhVftFTyTzs",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/v1/notes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "notes"
+          ]
+        },
+        "description": "## Get Notes\n\nRetrieves a list of notes stored in the system for a user but If an admin tries it it'll list out all the notes. This endpoint returns every note along with its owner's details.\n\n**Method:** `GET`  \n**URL:** `http://localhost:4000/api/v1/notes`\n\n---\n\n## Response Structure\n\nThe response is a JSON array of note objects. Each object contains the following fields:\n\n| Field | Type | Description |\n| --- | --- | --- |\n| `_id` | string | Unique identifier for the note |\n| `title` | string | Title of the note |\n| `content` | string | Body/content of the note |\n| `owner` | object | Details of the user who created the note |\n| `owner._id` | string | Unique identifier of the owner |\n| `owner.username` | string | Username of the owner |\n| `owner.email` | string | Email address of the owner |\n| `createdAt` | string (ISO 8601) | Timestamp when the note was created |\n| `updatedAt` | string (ISO 8601) | Timestamp when the note was last updated |\n| `__v` | number | Internal version key (used by MongoDB) |\n\n---\n\n## Example Response\n\n``` json\n[\n  {\n    \"_id\": \"6999c512b49ad9a8de00c622\",\n    \"title\": \"Aman Here\",\n    \"content\": \"GO n get Ice cream\",\n    \"owner\": {\n      \"_id\": \"6999c0e3b49ad9a8de00c5ec\",\n      \"username\": \"Aman\",\n      \"email\": \"aman@gmail.com\"\n    },\n    \"createdAt\": \"2026-02-21T14:45:38.700Z\",\n    \"updatedAt\": \"2026-02-21T14:45:38.700Z\",\n    \"__v\": 0\n  },\n  {\n    \"_id\": \"6999c8d8b49ad9a8de00c640\",\n    \"title\": \"First Note\",\n    \"content\": \"Testing API from Postman\",\n    \"owner\": {\n      \"_id\": \"6999c85fb49ad9a8de00c63d\",\n      \"username\": \"bhanu\",\n      \"email\": \"bhanu@test.com\"\n    },\n    \"createdAt\": \"2026-02-21T15:01:44.164Z\",\n    \"updatedAt\": \"2026-02-21T15:01:44.164Z\",\n    \"__v\": 0\n  }\n]\n\n ```"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Note",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljODVmYjQ5YWQ5YThkZTAwYzYzZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTY4NjA0MCwiZXhwIjoxNzcxNzcyNDQwfQ.fiLmq216p2wn_7i_gkvToov7fI8tEJ0BjhVftFTyTzs",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Updated Title\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/v1/notes/6999c512b49ad9a8de00c622",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "notes",
+            "6999c512b49ad9a8de00c622"
+          ]
+        },
+        "description": "## Update Note\n\nUpdates an existing note by its unique ID. You can modify fields such as the `title` and/or `content` of the note.\n\n---\n\n### Method\n`PUT`\n\n### URL Pattern\n```\nhttp://localhost:4000/api/v1/notes/:id\n```\n\n> Replace `:id` with the actual note ID you want to update.\n\n---\n\n### Request Body\n\nSend a JSON object with the fields you want to update.\n\n| Field     | Type   | Required | Description                        |\n|-----------|--------|----------|------------------------------------|\n| `title`   | string | Optional | The new title for the note         |\n| `content` | string | Optional | The new content/body of the note   |\n\n**Example Request Body:**\n```json\n{\n  \"title\": \"Updated Title\"\n}\n```\n\n---\n\n### Example Response\n\n**Status:** `200 OK`\n\n```json\n{\n  \"_id\": \"6999c512b49ad9a8de00c622\",\n  \"title\": \"Updated Title\",\n  \"content\": \"GO n get Ice cream\",\n  \"owner\": \"6999c0e3b49ad9a8de00c5ec\",\n  \"createdAt\": \"2026-02-21T14:45:38.700Z\",\n  \"updatedAt\": \"2026-02-21T15:05:27.457Z\",\n  \"__v\": 0\n}\n```\n\nThe response returns the full updated note object, including the `updatedAt` timestamp reflecting the time of the update."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Note",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljODVmYjQ5YWQ5YThkZTAwYzYzZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTY4NjA0MCwiZXhwIjoxNzcxNzcyNDQwfQ.fiLmq216p2wn_7i_gkvToov7fI8tEJ0BjhVftFTyTzs",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/v1/notes/6999c512b49ad9a8de00c622",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "notes",
+            "6999c512b49ad9a8de00c622"
+          ]
+        },
+        "description": "## Delete Note\n\nDeletes a specific note permanently from the system using its unique ID. Once deleted, the note cannot be recovered.\n\n---\n\n### Method & Endpoint\n\n```\nDELETE /api/v1/notes/:id\n```\n\n---\n\n### Path Parameters\n\n| Parameter | Type   | Required | Description                              |\n|-----------|--------|----------|------------------------------------------|\n| `id`      | string | Yes      | The unique identifier of the note to delete. |\n\n**Example:**\n```\nDELETE /api/v1/notes/6999c512b49ad9a8de00c622\n```\n\n---\n\n### Example Response\n\n**Status:** `200 OK`\n\n```json\n{\n  \"message\": \"Note deleted\"\n}\n```\n\n---\n\n### Notes\n- Returns `200 OK` with a confirmation message upon successful deletion.\n- Ensure the note ID provided exists; otherwise, the API may return a `404 Not Found` error."
+      },
+      "response": []
+    },
+    {
+      "name": "GetAllUsers",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5OTljODVmYjQ5YWQ5YThkZTAwYzYzZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc3MTY4NjA0MCwiZXhwIjoxNzcxNzcyNDQwfQ.fiLmq216p2wn_7i_gkvToov7fI8tEJ0BjhVftFTyTzs",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/v1/auth/admin/users",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "v1",
+            "auth",
+            "admin",
+            "users"
+          ]
+        },
+        "description": "## Get All Users\n\nRetrieves a list of **all registered users** in the system. This is an **admin-only** endpoint and should only be accessible to users with the `admin` role.\n\n---\n\n### Endpoint\n\n```\nGET /api/v1/auth/admin/users\n```\n\n---\n\n### Response\n\nReturns an **array of user objects**. Each object contains the following fields:\n\n| Field | Type | Description |\n|-------|------|-------------|\n| `_id` | `string` | Unique identifier for the user (MongoDB ObjectId) |\n| `username` | `string` | The display name of the user |\n| `email` | `string` | The email address of the user |\n| `role` | `string` | The role assigned to the user (`user` or `admin`) |\n| `__v` | `number` | Internal version key (MongoDB) |\n\n---\n\n### Example Response\n\n```json\n[\n  {\n    \"_id\": \"699952acaa33972e97a560ba\",\n    \"username\": \"Utsav\",\n    \"email\": \"utsav@gmail.com\",\n    \"role\": \"user\",\n    \"__v\": 0\n  },\n  {\n    \"_id\": \"69995533bfe8f2caff99203d\",\n    \"username\": \"Nikhil\",\n    \"email\": \"nikhil@gmail.com\",\n    \"role\": \"admin\",\n    \"__v\": 0\n  }\n]\n```\n\n---\n\n> ⚠️ **Admin Access Required:** This endpoint is restricted to admin users only. Ensure the request is made with valid admin credentials or an appropriate authorization token."
+      },
+      "response": []
+    }
+  ]
+}
