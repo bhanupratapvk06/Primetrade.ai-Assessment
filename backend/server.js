@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import swaggerUi from "swagger-ui-express";
 import apiV1 from "./routes/routes.index.js";
-import { connectDB } from "./configs/mongoDB.js";
+import { connectDB } from "./configs/mongodb.js";
 import { swaggerSpec } from "./configs/swagger.js";
 
 dotenv.config();
